@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: { sessions: 'users/sessions' }
+
+
   resources :comments
   resources :articles
-  devise_for :users
+
   get "home/index"
   root "home#index"
 end

@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Myapp</title>
+    <title>The News</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   </head>
 
   <body>
 
 
+<%# Navbar %>
 <nav class="navbar navbar-expand-lg bg-primary navbar-dark" data-bs-theme="dark">
-<div class="container-fluid">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Login</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Sign up</a>
-      </li>
-    </ul>
-  </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">TheRialNews</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+        
+        <% if user_signed_in? %>
+          <a class="nav-link" href="<%= destroy_user_session_path %>" data-method="delete">Log out</a>
+        <% else %>
+          <a class="nav-link <%= 'active' if current_page?(new_user_session_path) %>" href="<%= new_user_session_path %>">Log in</a>
+        <% end %>
+
+        </li>
+           <li class="nav-item">
+        <a class="nav-link <%= 'active' if current_page?(new_user_registration_path) %>" href="<%= new_user_registration_path %>">Sign up</a>
+        </li>
+    </div>
   </div>
 </nav>
+<%# Navbar %>
 
 
 
