@@ -2,5 +2,6 @@ Rails.application.routes.draw do
   resources :comments
   resources :articles
   devise_for :users
-  #root "home#index"
+  get "home/index"
+  root "home#index"
 end
