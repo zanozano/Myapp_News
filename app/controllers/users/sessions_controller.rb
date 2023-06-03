@@ -13,9 +13,20 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   # POST /resource/sign_in
-  def create
+def create
+  self.resource = warden.authenticate(auth_options)
+  if resource.nil?
+    flash.now[:alert] = "Credenciales inválidas. Por favor, verifica tu correo electrónico y contraseña."
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace('login-form', partial: '/devise/shared/alert', locals: { message: flash.now[:alert] }) }
+      format.html { render :new }
+      format.js { render partial: '/devise/shared/alert', locals: { message: flash.now[:alert] }, status: :unprocessable_entity }
+    end
+  else
     super
   end
+end
+
 
   # DELETE /resource/sign_out
   def destroy

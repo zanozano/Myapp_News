@@ -1,26 +1,48 @@
-<h2>Log in</h2>
+<div class="container-custom col-12 col-lg-6 mx-auto my-5">
+  <div class="p-4">
+    <h2 class="text-center">Log in</h2>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= form_for(:user, url: new_user_session_path, html: { id: 'login-form' }) do |f| %>
+    <%# Codigo antiguo <%= form_for(resource, as: resource_name, url: session_path(resource_name), id: "login-form") do |f| %> 
+      <div class="field mb-4">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: 'Ingrese su correo electrónico' %>
+      </div>
+
+      <div class="field mb-2">
+        <%= f.label :password %><br />
+        <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: 'Ingrese su contraseña' %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="field mb-4">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me %>
+        </div>
+      <% end %>
+
+      <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex gap-2">
+        <%= f.submit "Log in", class: "btn btn-primary", id: "login-button" %>
+        <%= link_to "Volver a inicio", root_path, class: "btn btn-outline-secondary" %>
+      </div>
+        <%= link_to '¿Olvidó su contraseña?', new_user_password_path %>
+      </div>
+    <% end %>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+<script>
+  document.getElementById('login-button').addEventListener('click', function(event) {
+    var emailField = document.getElementById('user_email');
+    var passwordField = document.getElementById('user_password');
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+    if (emailField.value === '' || passwordField.value === '') {
+      event.preventDefault();
+      Swal.fire({
+        icon: 'warning',
+        title: 'Por favor, complete todos los campos para iniciar sesión.',
+      });
+    }
+  });
+</script>

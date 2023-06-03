@@ -10,9 +10,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-   #def create
-  # super
-  #end
+def create
+  I18n.locale = :es
+  resource = build_resource(sign_up_params)
+
+  if resource.valid?
+    super do |resource|
+      # Código adicional que se ejecuta después de la creación exitosa
+    end
+  else
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace('registration-form', partial: '/devise/shared/error_messages', locals: { message: resource.errors.full_messages.join('<br>').html_safe }) }
+      format.html { render :new }
+      format.js { render partial: '/devise/shared/error_messages', locals: { message: resource.errors.full_messages.join('<br>').html_safe }, status: :unprocessable_entity }
+    end
+  end
+end
+
+
+
+
 
   # GET /resource/edit
   # def edit

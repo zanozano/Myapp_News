@@ -1,15 +1,16 @@
-<% if resource.errors.any? %>
-  <div id="error_explanation" data-turbo-cache="false">
-    <h2>
+<a class="alert-message mt-2 mb-0" href="<%= new_user_registration_path %>">
+  <div class="alert alert-danger d-flex flex-column align-items-center justify-content-center text-center" role="alert">
+    <h5 class="mt-4">
       <%= I18n.t("errors.messages.not_saved",
                  count: resource.errors.count,
                  resource: resource.class.model_name.human.downcase)
        %>
-    </h2>
+    </h5>
     <ul>
       <% resource.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
     </ul>
+    <p class="m-0 pt-3">Volver</p>
   </div>
-<% end %>
+</a>
