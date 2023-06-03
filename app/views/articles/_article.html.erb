@@ -1,2 +1,29 @@
-<div id="<%= dom_id article %>">
+<div class="container">
+
+  <div id="<%= dom_id article %>" class="row justify-content-center">
+    <div class="card col-md-6 col-12 container-custom mb-4">
+      <div class="card-body">
+        <h6 class="mb-1">Titulo</h6>
+        <h4 class="card-title mb-0"><%= article.title %></h4>
+        <p class="mb-0"><strong><%= article.user.name %></strong></p>
+        <pre><%= article.created_at.strftime("%d/%m/%Y %H:%M") %></pre>
+        <p class="card-text mb-4"><%= article.content %></p>
+        <hr class="my-4">
+        <h5 class="mb-1">Comentarios</h5>
+        <div class="d-flex flex-column">
+          <% article.comments.reverse_each do |comment| %>
+            <div class="d-flex flex-column mb-2">
+            <div class="d-flex mb-1">
+              <h6><%= comment.user.name %></h6> <pre> <%= comment.created_at.strftime("%d/%m/%Y %H:%M") %></pre>
+            </div>
+              <p><%= comment.content %></p>
+            </div>
+          <% end %>
+        </div>
+        <% if current_user && current_user.id == article.user_id %>
+          <%= link_to "Ver artículo completo", article_path(article), class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>

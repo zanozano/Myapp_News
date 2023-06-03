@@ -1,8 +1,27 @@
+body {
+    background-color: #1a70fa !important;
+}
+
+h4 {
+    font-weight: 700 !important;
+}
+
+
+h6 {
+    font-weight: 700 !important;
+    margin: 0 !important;
+}
+
+pre {
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
 .container-custom {
-    border-radius: 10px;
-    background: #ededed;
-    box-shadow: 20px 20px 60px #c9c9c9,
-        -20px -20px 60px #ffffff;
+    border: 2px solid #1a70fa !important;
+    border-radius: 10px !important;
+    background: rgba(222, 222, 222, 1);
+    box-shadow:  20px 20px 60px rgba(51, 51, 51, 0.3),
+             -20px -20px 60px rgba(51, 51, 51, 0.3),
 }
 
 .alert-message{

@@ -12,6 +12,20 @@
   <% end %>
 
   <div>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :content %>
+    <%= form.text_area :content %>
+  </div>
+
+  <%= form.hidden_field :user_id, value: current_user.id %>
+  <!-- Esto agrega un campo oculto para enviar la id del usuario actualmente logeado -->
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>
+

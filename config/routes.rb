@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
 
-
   resources :comments
   resources :articles
 
-  get "home/index"
-  root "home#index"
+  authenticated :user do
+    root to: 'articles#index', as: :authenticated_root
+  end
+
+  root to: 'home#index'
 end

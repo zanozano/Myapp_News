@@ -37,12 +37,17 @@ class ArticlesController < ApplicationController
   # PATCH/PUT /articles/1 or /articles/1.json
   def update
     respond_to do |format|
-      if @article.update(article_params)
-        format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
-        format.json { render :show, status: :ok, location: @article }
+      if current_user.id == @article.user_id # Verifica si el usuario actual es el propietario del artículo
+        if @article.update(article_params)
+          format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
+          format.json { render :show, status: :ok, location: @article }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @article.errors, status: :unprocessable_entity }
+        end
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.html { redirect_to article_url(@article), alert: "You are not authorized to edit this article." }
+        format.json { render json: { error: "You are not authorized to edit this article." }, status: :unauthorized }
       end
     end
   end
@@ -65,6 +70,6 @@ class ArticlesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.fetch(:article, {})
+      params.require(:article).permit(:title, :content, :user_id)
     end
 end
