@@ -1,15 +1,16 @@
-<div id="notification" class="alert alert-success text-center col-12 col-lg-6 mx-auto">
-  <p class="m-0" style="color: green"><%= notice %></p>
-</div>
+<% if notice.present? %>
+  <div id="notification" class="alert alert-success text-center col-12 col-lg-6 mx-auto">
+    <p class="m-0" style="color: green"><%= notice %></p>
+  </div>
+  <script>
+    setTimeout(function() {
+      var notification = document.getElementById("notification");
+      notification.style.display = "none";
+    }, 5000);
+  </script>
+<% end %>
 
 
 
 <%= render @article %>
 
-
-<script>
-  setTimeout(function() {
-    var notification = document.getElementById("notification");
-    notification.style.display = "none";
-  }, 5000);
-</script>

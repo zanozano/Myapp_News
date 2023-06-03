@@ -4,9 +4,12 @@ Rails.application.routes.draw do
   registrations: 'users/registrations'
 }
 
-  resources :comments
-  resources :articles
+  resources :articles do
+    resources :comments
+  end
 
+  resources :comments
+  
   authenticated :user do
     root to: 'articles#index', as: :authenticated_root
   end

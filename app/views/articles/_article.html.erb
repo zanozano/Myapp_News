@@ -20,20 +20,44 @@
             </div>
           <% end %>
         </div>
-        
-        <% if current_user && current_user.id == article.user_id %>
-          <% if controller_name != "articles" || action_name != "show" %>
-            <%= link_to "Ver artículo completo", article_path(article), class: "btn btn-primary" %>
-          <% end %>
+
+        <hr class="my-4">
+        <%# CREAR COMENTARIOS %>
+        <h6 class="mb-2">Agregar Comentario</h6>
+        <%= form_with(model: Comment.new, url: article_comments_path(article_id: article.id), class: "mb-4", remote: true) do |form| %>
+       <div class="d-flex form-row align-items-top gap-2">
+          <div class="flex-grow-1">
+            <div>
+              <%= form.text_area :content, class: "form-control", placeholder: "Escribe tu comentario..." %>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <%= form.submit "Enviar", class: "btn btn-primary" %>
+          </div>
+        </div>
         <% end %>
 
-        <% if controller_name == "articles" && action_name == "show" %>
-          <div class="d-flex gap-2">
-            <%= link_to "Volver", articles_path, class: "btn btn-outline-secondary" %>
-            <%= link_to "Edit this article", edit_article_path(@article),class: "btn btn-secondary" %>
-            <%= button_to "Destroy this article", @article, method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" }, form: { action: article_path(@article), method: :delete } %>
-          </div>
-        <% end %>
+        <div class="d-flex gap-2">
+
+          <% if current_user && current_user.id == article.user_id %>
+            <% if controller_name != "articles" || action_name != "show" %>
+              <%= link_to "Ver artículo completo", article_path(article), class: "btn btn-primary" %>
+            <% end %>
+          <% end %>
+
+          <% if controller_name == "articles" && action_name == "show" %>
+            <div class="d-flex gap-2">
+              <%= link_to "Volver", articles_path, class: "btn btn-outline-secondary" %>
+              <% if current_user == @article.user %>
+                <%= link_to "Edit this article", edit_article_path(@article), class: "btn btn-secondary" %>
+                <%= button_to "Destroy this article", @article, method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" }, form: { action: article_path(@article), method: :delete } %>
+              <% end %>
+            </div>
+          <% end %>
+
+  </div>
+
+
 
       </div>
     </div>
