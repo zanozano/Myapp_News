@@ -1,7 +1,11 @@
-<p style="color: green"><%= notice %></p>
+<div id="notification" class="alert alert-success text-center col-12 col-lg-6 mx-auto">
+  <p class="m-0" style="color: green"><%= notice %></p>
+</div>
+
 
 <div class="col-md-6 col-12 mx-auto mb-4">
-  <h1 class="z-index-4 mb-4">Articulos</h1>
+<h1 class="z-index-4 mb-4">Articulos</h1>
+<%= link_to 'New article', new_article_path, class: 'btn btn-success' %>
 </div>
 
 <div id="articles">
@@ -10,4 +14,9 @@
   <% end %>
 </div>
 
-<%= link_to "New article", new_article_path %>
+<script>
+  setTimeout(function() {
+    var notification = document.getElementById("notification");
+    notification.style.display = "none";
+  }, 5000);
+</script>

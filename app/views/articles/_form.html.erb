@@ -1,31 +1,57 @@
-<%= form_with(model: article) do |form| %>
-  <% if article.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
+<div class="container-custom col-12 col-lg-6 mx-auto my-5">
+  <div class="p-4">
+    <h2 class="text-center">
+      <% if @article.new_record? %>
+        Crear Nuevo Artículo
+      <% else %>
+        Editar Artículo
+      <% end %>
+    </h2>
 
-      <ul>
-        <% article.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <%= form_with(model: article, class: "container", id: "article-form") do |form| %>
+      <% if article.errors.any? %>
+        <div class="alert alert-danger">
+          <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
+          <ul>
+            <% article.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <div>
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+      <div class="field mb-4">
+        <%= form.label :title, class: "form-label" %>
+        <%= form.text_field :title, class: "form-control" %>
+      </div>
+
+      <div class="field mb-4">
+        <%= form.label :content, class: "form-label" %>
+        <%= form.text_area :content, class: "form-control" %>
+      </div>
+
+      <%= form.hidden_field :user_id, value: current_user.id %>
+      <!-- Esto agrega un campo oculto para enviar la id del usuario actualmente logeado -->
+
+      <div class="mb-3">
+        <%= form.submit "Guardar", class: "btn btn-primary" %>
+        <%= link_to "Volver", articles_path, class: "btn btn-outline-secondary" %>
+      </div>
+    <% end %>
   </div>
+</div>
 
-  <div>
-    <%= form.label :content %>
-    <%= form.text_area :content %>
-  </div>
+<script>
+  document.getElementById("article-form").addEventListener("submit", function(event) {
+    var titleField = document.getElementById("article_title");
+    var contentField = document.getElementById("article_content");
 
-  <%= form.hidden_field :user_id, value: current_user.id %>
-  <!-- Esto agrega un campo oculto para enviar la id del usuario actualmente logeado -->
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
-
+    if (titleField.value === '' || contentField.value === '') {
+      event.preventDefault();
+      Swal.fire({
+        icon: 'warning',
+        title: 'Por favor, complete todos los campos para registrarse.',
+      });
+    }
+  });
+</script>

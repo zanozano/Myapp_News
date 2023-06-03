@@ -2,12 +2,21 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: %i[ show edit update destroy ]
 
   # GET /articles or /articles.json
-  def index
-    @articles = Article.all
+def index
+  if current_user
+    @user_articles = current_user.articles.order(created_at: :desc)
+    @other_articles = Article.where.not(user_id: current_user.id).order(created_at: :desc)
+    @articles = @user_articles + @other_articles
+  else
+    @articles = Article.all.order(created_at: :desc)
   end
+end
+
+
 
   # GET /articles/1 or /articles/1.json
   def show
+    @article = Article.find(params[:id])
   end
 
   # GET /articles/new
@@ -20,12 +29,13 @@ class ArticlesController < ApplicationController
   end
 
   # POST /articles or /articles.json
-  def create
+def create
   @article = current_user.articles.build(article_params)
 
   respond_to do |format|
-    if @article.save
-      format.html { redirect_to article_url(@article), notice: "Article was successfully created." }
+    if @article.valid?
+      @article.save
+      format.html { redirect_to article_url(@article), notice: "Articulo creado satisfactoriamente" }
       format.json { render :show, status: :created, location: @article }
     else
       format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +50,7 @@ end
     respond_to do |format|
       if current_user.id == @article.user_id # Verifica si el usuario actual es el propietario del artículo
         if @article.update(article_params)
-          format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
+          format.html { redirect_to article_url(@article), notice: "Articulo Actualizado satisfactoriamente" }
           format.json { render :show, status: :ok, location: @article }
         else
           format.html { render :edit, status: :unprocessable_entity }
@@ -58,7 +68,7 @@ end
     @article.destroy
 
     respond_to do |format|
-      format.html { redirect_to articles_url, notice: "Article was successfully destroyed." }
+      format.html { redirect_to articles_url, notice: "Articulo Eliminado satisfactoriamente" }
       format.json { head :no_content }
     end
   end
